@@ -1,27 +1,14 @@
 "use strict";
 
 /*setting the cursor to focus on the first field*/
-$(document).ready( function() {
+$(document).ready(function() {
   $("input:text:visible:first").focus();
- });
+
+
+
 
 /*adding text field to the other selection*/
-var jobRoleSelect = document.getElementById('title');
-
-jobRoleSelect.addEventListener('click', function() {
-var otherSelected = jobRoleSelect.value === 'other';
-var otherElements = document.querySelectorAll('.other');
-
-for (var i = 0; i < otherElements.length; i++) {
- if (otherSelected)
-   otherElements[i].classList.remove('hidden');
- else
-   otherElements[i].classList.add('hidden');
-}
-});
-
-/*matching the design with the color*/
-var jobRoleSelect = document.getElementById('title');
+const jobRoleSelect = document.getElementById('title');
 
 jobRoleSelect.addEventListener('click', function() {
 var otherSelected = jobRoleSelect.value === 'other';
@@ -59,6 +46,7 @@ document.getElementById("design").addEventListener("change", function(){
 
 	}
 });
+
 
 
 /*Register for Activities section of the form.*/
@@ -139,26 +127,31 @@ var eventsSection = document.querySelector('.activities');
       events[j].addEventListener('change', getEventCost);
     }
 
-    // Payment Info section of the form. Display payment sections based on chosen payment option
-  document.getElementById("payment options").addEventListener("change", function(){
-  	var paymentOption = document.getElementById('payment');
-  	var paymentSelection = paymentOption.value;
-  	var container = document.getElementById('payment-container');
+    //changing the payment message
+    bitcoin.style.display = 'none';
+    paypal.style.display = 'block';
 
-  	// "Credit Card" payment option isselected by default so display of the #credit-card div...
-  	// hide the "Paypal" and "Bitcoin information.
-  	if(paymentSelection === "credit card") {
-  		container.innerHTML = '<div id="credit-card" class="credit-card"><div class="col-6 col"><label for="cc-num" id="cc-numLbl">Card Number:</label><input id="cc-num" name="user_cc-num" type="text"></div><div class="col-3 col"><label for="zip" id="zipLbl">Zip Code:</label><input id="zip" name="user_zip" type="text"></div><div class="col-3 col"><label for="cvv" id="cvvLbl">CVV:</label><input id="cvv" name="user_cvv" type="text"></div><label>Expiration Date:</label><select id="exp-month" name="user_exp-month"><option value="1">1 - January</option><option value="2">2 - February</option><option value="3">3 - March</option><option value="4">4 - April</option><option value="5">5 - May</option><option value="6">6 - June</option><option value="7">7 - July</option><option value="8">8 - August</option><option value="9">9 - September</option><option value="10">10 - October</option><option value="11">11 - November</option><option value="12">12 - December</option></select><select id="exp-year" name="user_exp-year"><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option></select></div>';
+    //setting up the payment
+    $('#paypal, #bitcoin').hide();
 
-  	} else if(paymentSelection === "paypal") {
-  		// If user selects the "PayPal" payment option, display the Paypal information, and hide the credit card + Bitcoin
-  		container.innerHTML =  "<div><p>If you selected the PayPal option we'll take you to Paypal's site to set up your billing information, when you click 'Register' below.</p></div>";
+    //Set credit card as default method
+    $('#payment').val("credit card");
+    //function for changing the payment option
+    $('#payment').change(function(){
+    	if ($('#payment option:selected').val() === "paypal") {
+    		$('#credit-card, #bitcoin').hide();
+    		$('#paypal').show();
 
-  	} else if(paymentSelection === "bitcoin") {
-  		/// If user selects the "Bitcoin" payment option, display the Bitcoin information, and hide the credit card + paypal.
-  		container.innerHTML = "<div><p>If you selected the Bitcoin option we'll take you to the Coinbase site to set up your billing information. Due to the nature of exchanging Bitcoin, all Bitcoin transactions will be final.</p></div>";
-  	}
-  });
+    	} else if ($('#payment option:selected').val() === "bitcoin") {
+    		$('#credit-card, #paypal').hide();
+    		$('#bitcoin').show();
+    	} else {
+    		$('#credit-card').show();
+    		$('#paypal, #bitcoin').hide();
+    	}
+      });
+    });
+
 
   // Form validation. Display error messages and don't let the user submit the form if any of these validation errors exist:
 document.querySelector("button").addEventListener("click", function(e) {
@@ -195,8 +188,9 @@ document.querySelector("button").addEventListener("click", function(e) {
 
 
    	//check there's a valid credit card number
+  var ccNumLbl = document.getElementById("cc-numLbl");
 	var ccNum = document.getElementById("cc-num");
-    var ccNumLbl = document.getElementById("cc-numLbl");
+
 
 
 // takes the form field value and returns true on valid number
@@ -283,6 +277,7 @@ function valid_credit_card(value) {
     	tshirtReminder.style.color = "red";
     	e.preventDefault();
     } else if (tSelection === "js puns" || tSelection === "heart js") {
-    	tshirtReminder.innerHTML = "";
+    	tshirtReminder.innerHTML = "Don't forget to choose a tshirt";
     }
-});
+
+ });
