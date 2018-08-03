@@ -19,7 +19,7 @@ for (var i = 0; i < otherElements.length; i++) {
    otherElements[i].classList.remove('hidden');
  else
    otherElements[i].classList.add('hidden');
-}
+  }
 });
 
 
@@ -135,7 +135,7 @@ var eventsSection = document.querySelector('.activities');
     $('#paypal, #bitcoin').hide();
 
     //Set credit card as default method
-    $('#payment').val("credit card");
+     $('#payment').val("credit card");
     //function for changing the payment option
     $('#payment').change(function(){
     	if ($('#payment option:selected').val() === "paypal") {
@@ -150,8 +150,33 @@ var eventsSection = document.querySelector('.activities');
     		$('#paypal, #bitcoin').hide();
     	}
       });
-    });
 
+
+//set function to switch between the payselector
+
+  $("#submit").on('click',function(){
+
+    var selection = $("#payment option:selected").val();
+
+
+
+    if (selection === "Credit") {
+
+      validation();
+
+    };
+
+
+
+  });
+
+
+
+  function validation(){
+
+    console.log("Do something");
+
+  }
 
   // Form validation. Display error messages and don't let the user submit the form if any of these validation errors exist:
 document.querySelector("button").addEventListener("click", function(e) {
@@ -190,46 +215,31 @@ document.querySelector("button").addEventListener("click", function(e) {
    	//check there's a valid credit card number
   var ccNumLbl = document.getElementById("cc-numLbl");
 	var ccNum = document.getElementById("cc-num");
+  	if(ccNum.value.length == 0) {
+          ccNumLbl.style.color = "red";
 
-
+      } else {
+          ccNumLbl.style.color = "black";
+      }
 
 // takes the form field value and returns true on valid number
-function valid_credit_card(value) {
-  // accept only digits, dashes or spaces
-	if (/[^0-9-\s]+/.test(value)) return false;
-
-	// The Luhn Algorithm. It's so pretty.
-	var nCheck = 0, nDigit = 0, bEven = false;
-	value = value.replace(/\D/g, "");
-
-	for (var n = value.length - 1; n >= 0; n--) {
-		var cDigit = value.charAt(n),
-			  nDigit = parseInt(cDigit, 10);
-
-		if (bEven) {
-			if ((nDigit *= 2) > 9) nDigit -= 9;
-		}
-
-		nCheck += nDigit;
-		bEven = !bEven;
-	}
-
-	return (nCheck % 10) == 0;
-}
 
 
-	if(!valid_credit_card(ccNum.input)) {
-        ccNumLbl.style.color = "red";
-        e.preventDefault();
-    } else {
-        ccNumLbl.style.color = "black";
-    }
+
+var submitForm = function() {
+if(validForm()) {
+    $( "form:first" ).submit();
+  }
+};
+
+
+
 
     //check there's a zip code
 	var zip = document.getElementById("zip");
     var zipLbl = document.getElementById("zipLbl");
 	if(zip.value.length == 0) {
-		e.preventDefault();
+
         zipLbl.style.color = "red";
     } else {
         zipLbl.style.color = "black";
@@ -240,7 +250,7 @@ function valid_credit_card(value) {
     var cvvLbl = document.getElementById("cvvLbl");
 	if(cvv.value.length == 0) {
         cvvLbl.style.color = "red";
-        e.preventDefault();
+
     } else {
         cvvLbl.style.color = "black";
     }
@@ -271,13 +281,20 @@ function valid_credit_card(value) {
     var tShirtMenu = document.getElementById('design');
     var tSelection = tShirtMenu.value;
     var tshirtReminder = document.getElementById("tshirtReminder");
+    var lineBreak = document.getElementById("lineBreak");
 
 	if(tSelection === "selectTheme"){
     	tshirtReminder.innerHTML = "Don't forget to choose a tshirt";
     	tshirtReminder.style.color = "red";
+      lineBreak.innerHTML = "<br>";
     	e.preventDefault();
-    } else if (tSelection === "js puns" || tSelection === "heart js") {
-    	tshirtReminder.innerHTML = "Don't forget to choose a tshirt";
-    }
+    } else {
+      (counter >= 1)
+        tshirtReminder.innerHTML = "";
+        lineBreak.innerHTML = "";
+      }
 
+
+
+  });
  });
