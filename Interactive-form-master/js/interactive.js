@@ -141,10 +141,11 @@ var eventsSection = document.querySelector('.activities');
     	if ($('#payment option:selected').val() === "paypal") {
     		$('#credit-card, #bitcoin').hide();
     		$('#paypal').show();
-
+        return true;
     	} else if ($('#payment option:selected').val() === "bitcoin") {
     		$('#credit-card, #paypal').hide();
     		$('#bitcoin').show();
+        return true;
     	} else {
     		$('#credit-card').show();
     		$('#paypal, #bitcoin').hide();
@@ -154,7 +155,7 @@ var eventsSection = document.querySelector('.activities');
 
 //set function to switch between the payselector
 
-  $("#submit").on('click',function(){
+  $("#submit").on('click',function(e){
 
     var selection = $("#payment option:selected").val();
 
@@ -168,7 +169,7 @@ var eventsSection = document.querySelector('.activities');
 
 
 
-  });
+
 
 
 
@@ -178,8 +179,12 @@ var eventsSection = document.querySelector('.activities');
 
   }
 
+
+});
   // Form validation. Display error messages and don't let the user submit the form if any of these validation errors exist:
 document.querySelector("button").addEventListener("click", function(e) {
+
+
 
 	// Name field can't be empty
     var nameInput = document.getElementById("name");
@@ -212,48 +217,73 @@ document.querySelector("button").addEventListener("click", function(e) {
     }
 
 
-   	//check there's a valid credit card number
-  var ccNumLbl = document.getElementById("cc-numLbl");
-	var ccNum = document.getElementById("cc-num");
-  	if(ccNum.value.length == 0) {
-          ccNumLbl.style.color = "red";
 
-      } else {
-          ccNumLbl.style.color = "black";
-      }
+
+    //check there's a valid credit card number
+    function validateCreditCard(creditcard){
+      const creditCard = /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/g;
+      return creditCard.test(creditcard);
+    }
+
+    var ccNumLbl = document.getElementById("cc-numLbl");
+    var ccNum = document.getElementById("cc-num");
+    if(!validateCreditCard(ccnum.value)){
+
+      ccnumLbl.style.color = "red";
+
+
+  } else {
+      ccnumLbl.style.color = "black";
+
+  }
+
+
+
+        //check there's a zip code
+        function validatezipCode(zip){
+          const zipCode = /^\d{5}(?:[-\s]\d{4})?$/;
+
+          return zipCode.test(zip);
+        }
+        var zip = document.getElementById("zip");
+          var zipLbl = document.getElementById("zipLbl");
+      if(!validatezipCode(zip.value)){
+        zipLbl.style.color = "red";
+
+  } else {
+      zipLbl.style.color = "black";
+      zip.focus();
+  }
+
+
+        //check there's a cvv
+        function validatecVV(cvv){
+          const cVV = /^[0-9]{3,4}$/;
+          return cVV.test(cvv);
+        }
+        var cvv = document.getElementById("cvv");
+          var cvvLbl = document.getElementById("cvvLbl");
+      if(!validatecVV(cvv.value)){
+
+        cvvLbl.style.color = "red";
+
+    } else {
+        cvvLbl.style.color = "black";
+        cvv.focus();
+    }
+
 
 // takes the form field value and returns true on valid number
-
-
-
 var submitForm = function() {
 if(validForm()) {
-    $( "form:first" ).submit();
+    $( "form:first" ).submit(function () {
+
+    });
   }
 };
 
 
 
-
-    //check there's a zip code
-	var zip = document.getElementById("zip");
-    var zipLbl = document.getElementById("zipLbl");
-	if(zip.value.length == 0) {
-
-        zipLbl.style.color = "red";
-    } else {
-        zipLbl.style.color = "black";
-    }
-
-    //check there's a cvv
-	var cvv = document.getElementById("cvv");
-    var cvvLbl = document.getElementById("cvvLbl");
-	if(cvv.value.length == 0) {
-        cvvLbl.style.color = "red";
-
-    } else {
-        cvvLbl.style.color = "black";
-    }
 
     //Check that at least 1 activity has been selected
     var activities = document.getElementsByClassName("activity");
@@ -293,7 +323,6 @@ if(validForm()) {
         tshirtReminder.innerHTML = "";
         lineBreak.innerHTML = "";
       }
-
 
 
   });
